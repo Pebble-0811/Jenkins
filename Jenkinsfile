@@ -1,14 +1,23 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'maven0811'
+    parameters {
+        booleanParam(name: 'executeTests', defaultValue: true, description: 'Run tests?')
     }
 
     stages {
         stage('Build') {
             steps {
-                bat 'mvn -version'
+                echo 'Building..'
+            }
+        }
+
+        stage('Test') {
+            when {
+                expression { params.executeTests == true }
+            }
+            steps {
+                echo 'Testing..'
             }
         }
     }
